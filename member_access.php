@@ -3,7 +3,7 @@
  * Plugin Name: Member Access
  * Plugin URI:  http://www.chrisabernethy.com/wordpress-plugins/member-access/
  * Description: Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
- * Version:     0.2
+ * Version:     0.1
  * Author:      Chris Abernethy
  * Author URI:  http://www.chrisabernethy.com/
  * 
