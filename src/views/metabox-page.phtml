@@ -1,0 +1,25 @@
+<?php
+/**
+ * Copyright 2008 @author_name@
+ *
+ * This file is part of @plugin_name@.
+ * 
+ * @plugin_name@ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * @plugin_name@ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with @plugin_name@.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+?>
+<p><?php echo wp_specialchars($this->current_state_message) ?></p>
+<p><label class="selectit"><input style="vertical-align:middle;" name="<?php echo attribute_escape($this->plugin_label . '_visibility') ?>" type="radio" value="public" <?php echo 'public' == $this->visibility ? 'checked="checked"' : '' ?>/> <?php echo wp_specialchars(__('Ignore the default settings and make this page visible to everyone', '@plugin_label@')) ?></label></p>
+<p><label class="selectit"><input style="vertical-align:middle;" name="<?php echo attribute_escape($this->plugin_label . '_visibility') ?>" type="radio" value="private" <?php echo 'private' == $this->visibility ? 'checked="checked"' : '' ?>/> <?php echo wp_specialchars(__('Ignore the default settings and make this page visible only to members', '@plugin_label@')) ?></label></p>
+<p><label class="selectit"><input style="vertical-align:middle;" name="<?php echo attribute_escape($this->plugin_label . '_visibility') ?>" type="radio" value="default" <?php echo 'default' == $this->visibility ? 'checked="checked"' : '' ?>/> <?php echo wp_specialchars(__('Honor the default page visibility settings', '@plugin_label@')) ?></label></p>
