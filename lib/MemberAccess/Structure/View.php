@@ -1,28 +1,28 @@
 <?php
 /**
- * Copyright 2008 @author_name@
+ * Copyright 2008 Chris Abernethy
  *
- * This file is part of @plugin_name@.
+ * This file is part of Member Access.
  * 
- * @plugin_name@ is free software: you can redistribute it and/or modify
+ * Member Access is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * @plugin_name@ is distributed in the hope that it will be useful,
+ * Member Access is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with @plugin_name@.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Member Access.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
 
 /**
  * A basic view rendering class.
  */
-class MyPlugin_Structure_View extends MyPlugin_Structure
+class MemberAccess_Structure_View extends MemberAccess_Structure
 {
 
     /**
@@ -38,7 +38,7 @@ class MyPlugin_Structure_View extends MyPlugin_Structure
      * @param string $file Path to the view script, relative to the 'views'
      *                     directory.
      */
-    function MyPlugin_Structure_View($file)
+    function MemberAccess_Structure_View($file)
     {
         // Find base directory for our views. This is expected to be called
         // 'views', and to be located immediately beneath the plugin directory.
@@ -62,7 +62,7 @@ class MyPlugin_Structure_View extends MyPlugin_Structure
         if (!is_readable($this->_file)) {
             $trace = debug_backtrace();
             trigger_error(sprintf(
-                __('Cannot find view script %1$s in file %2$s on line %3$d', '@plugin_label@')
+                __('Cannot find view script %1$s in file %2$s on line %3$d', 'member_access')
               , $this->_file, $trace[0]['file'], $trace[0]['line']
             ), E_USER_ERROR);
         }

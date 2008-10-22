@@ -1,21 +1,21 @@
 <?php
 /**
- * Copyright 2008 @author_name@
+ * Copyright 2008 Chris Abernethy
  *
- * This file is part of @plugin_name@.
+ * This file is part of Member Access.
  * 
- * @plugin_name@ is free software: you can redistribute it and/or modify
+ * Member Access is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * @plugin_name@ is distributed in the hope that it will be useful,
+ * Member Access is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with @plugin_name@.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Member Access.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
 
@@ -24,7 +24,7 @@
  * to function as simple data structures at their core. Data is stored in a
  * member variable and is accessed via the PHP overloading methods.
  */
-class MyPlugin_Structure
+class MemberAccess_Structure
 {
 
     /**
@@ -60,7 +60,7 @@ class MyPlugin_Structure
         }
         $trace = debug_backtrace();
         trigger_error(sprintf(
-            __('Undefined property via __get(): %1$s in file %2$s on line %3$d', '@plugin_label@')
+            __('Undefined property via __get(): %1$s in file %2$s on line %3$d', 'member_access')
           , $key, $trace[0]['file'], $trace[0]['line']
         ), E_USER_NOTICE);
         return null;

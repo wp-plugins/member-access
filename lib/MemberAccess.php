@@ -1,35 +1,35 @@
 <?php
 /**
- * Copyright 2008 @author_name@
+ * Copyright 2008 Chris Abernethy
  *
- * This file is part of @plugin_name@.
+ * This file is part of Member Access.
  * 
- * @plugin_name@ is free software: you can redistribute it and/or modify
+ * Member Access is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * @plugin_name@ is distributed in the hope that it will be useful,
+ * Member Access is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with @plugin_name@.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Member Access.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
 
 /**
- * @plugin_description@
+ * Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
  */
-class MyPlugin
+class MemberAccess
 {
 
     /**
      * An instance of the options structure containing all options for this
      * plugin.
      *
-     * @var MyPlugin_Structure_Options
+     * @var MemberAccess_Structure_Options
      */
     var $_options = null;
 
@@ -40,7 +40,7 @@ class MyPlugin
     /**
      * Retrieve the instance of this class, creating it if necessary.
      *
-     * @return MyPlugin
+     * @return MemberAccess
      */
     function instance()
     {
@@ -55,9 +55,9 @@ class MyPlugin
     /**
      * The constructor initializes the options object for this plugin.
      */
-    function MyPlugin()
+    function MemberAccess()
     {
-        $this->_options = new MyPlugin_Structure_Options('@plugin_label@_options');
+        $this->_options = new MemberAccess_Structure_Options('member_access_options');
     }
 
     /**************************************************************************/
@@ -71,14 +71,14 @@ class MyPlugin
      *
      * Example Usage:
      * <pre>
-     * MyPlugin::run(__FILE__)
+     * MemberAccess::run(__FILE__)
      * </pre>
      * 
      * @param string $plugin_file The full path to the plugin bootstrap file.
      */
     function run($plugin_file)
     {
-        $plugin = MyPlugin::instance($class_name);
+        $plugin = MemberAccess::instance($class_name);
 
         // Activation and deactivation hooks have special registration
         // functions that handle sanitization of the given filename. It
@@ -94,7 +94,7 @@ class MyPlugin
         add_action('manage_pages_custom_column' , array($plugin, 'renderPostsColumns'), 10, 2);
         add_action('manage_posts_custom_column' , array($plugin, 'renderPostsColumns'), 10, 2);
         add_action('wp_insert_post'             , array($plugin, 'updatePostVisibility'));
-        add_action('@plugin_label@_save_options', array($plugin, 'saveOptionsPage'));
+        add_action('member_access_save_options', array($plugin, 'saveOptionsPage'));
 
         // Set up filter callbacks.
         add_filter('the_posts'                  , array($plugin, 'filterPosts'));
@@ -121,7 +121,7 @@ class MyPlugin
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->_options->version, '@plugin_version@', '<')) {
+        if (version_compare($this->_options->version, '0.2', '<')) {
             $this->_upgrade();
             return;
         }
@@ -148,11 +148,11 @@ class MyPlugin
         $wpdb->query(sprintf(
             "ALTER TABLE %s ADD COLUMN %s enum('public','private','default') DEFAULT 'default'"
           , $wpdb->posts
-          , $wpdb->escape('@plugin_label@_visibility')
+          , $wpdb->escape('member_access_visibility')
         ));
 
         // Set the default options.
-        $this->_options->version                 = '@plugin_version@';
+        $this->_options->version                 = '0.2';
 
         $this->_options->pages_private           = false;
         $this->_options->pages_redirect          = false;
@@ -192,7 +192,7 @@ class MyPlugin
         $wpdb->query(sprintf(
             "ALTER TABLE %s DROP %s"
           , $wpdb->posts
-          , $wpdb->escape('@plugin_label@_visibility')
+          , $wpdb->escape('member_access_visibility')
         ));
 
         // Remove all plugin options from the wp_options table.
@@ -212,7 +212,7 @@ class MyPlugin
         //    // Do upgrades for version 3.5
         //    $this->_options->version = '3.5';
         //}
-        $this->_options->version = '@plugin_version@';
+        $this->_options->version = '0.2';
         $this->_options->save();
     }
 
@@ -327,10 +327,10 @@ class MyPlugin
     {
         $page = add_submenu_page(
             'plugins.php'                     // parent
-          , wp_specialchars('@plugin_name@')  // page_title
-          , wp_specialchars('@plugin_name@')  // menu_title
+          , wp_specialchars('Member Access')  // page_title
+          , wp_specialchars('Member Access')  // menu_title
           , 'manage_options'                  // access_level
-          , '@plugin_label@'                  // file
+          , 'member_access'                  // file
           , array($this, 'renderOptionsPage') // function
         );
 
@@ -353,8 +353,8 @@ class MyPlugin
         if (in_array($page, array('page', 'post'))) {
             $callback = 'render' . ucfirst($page) . 'MetaBox';
             add_meta_box(
-                attribute_escape('@plugin_label@') // id attribute
-              , wp_specialchars('@plugin_name@')   // metabox title
+                attribute_escape('member_access') // id attribute
+              , wp_specialchars('Member Access')   // metabox title
               , array($this, $callback)            // callback function
               , $page                              // page type
             );
@@ -372,8 +372,8 @@ class MyPlugin
     {
         global $post;
 
-        if ('@plugin_label@_visibility' === $column_name) {
-            switch($post->{'@plugin_label@_visibility'}) {
+        if ('member_access_visibility' === $column_name) {
+            switch($post->{'member_access_visibility'}) {
                 case 'public':  $visibility = __('Everyone'); break;
                 case 'private': $visibility = __('Members');  break;
                 case 'default':
@@ -402,7 +402,7 @@ class MyPlugin
         // use 'default'.
 
         $visibility = 'default';
-        $key        = '@plugin_label@_visibility';
+        $key        = 'member_access_visibility';
         if (array_key_exists($key, $_POST)) {
             if (in_array($_POST[$key], array('public', 'private'))) {
                 $visibility = $_POST[$key];
@@ -431,7 +431,7 @@ class MyPlugin
      */
     function registerPostsColumns($defaults)
     {
-        $defaults['@plugin_label@_visibility'] = wp_specialchars(__('Visibility', '@plugin_label@'));
+        $defaults['member_access_visibility'] = wp_specialchars(__('Visibility', 'member_access'));
         return $defaults;
     }
 
@@ -447,11 +447,11 @@ class MyPlugin
      */
     function renderOptionsLink($links, $file)
     {
-        if ('@plugin_label@' == dirname($file)) {
-            $view = new MyPlugin_Structure_View('options-link.phtml');
-            $view->link_href  = 'plugins.php?page=@plugin_label@';
-            $view->link_title = sprintf(__('%s Settings', '@plugin_label@'), '@plugin_name@');
-            $view->link_text  = __('Settings', '@plugin_label@');
+        if ('member_access' == dirname($file)) {
+            $view = new MemberAccess_Structure_View('options-link.phtml');
+            $view->link_href  = 'plugins.php?page=member_access';
+            $view->link_title = sprintf(__('%s Settings', 'member_access'), 'Member Access');
+            $view->link_text  = __('Settings', 'member_access');
             ob_start();
             $view->render();
             array_unshift($links, ob_get_clean());
@@ -471,41 +471,41 @@ class MyPlugin
             check_admin_referer('update-options');
 
             // Clear all post overrides.
-            if (isset($_POST['@plugin_label@_clear_post_overrides'])) {
+            if (isset($_POST['member_access_clear_post_overrides'])) {
                 $this->_clearOverrides('post');
                 return;
             }
 
             // Clear all page overrides.
-            if (isset($_POST['@plugin_label@_clear_page_overrides'])) {
+            if (isset($_POST['member_access_clear_page_overrides'])) {
                 $this->_clearOverrides('page');
                 return;
             }
 
             // Non-Booleans
-            $this->_options->pages_redirect_page     = $_POST['@plugin_label@_pages_redirect_page'];
-            $this->_options->posts_redirect_page     = $_POST['@plugin_label@_posts_redirect_page'];
-            $this->_options->postspage_redirect_page = $_POST['@plugin_label@_postspage_redirect_page'];
-            $this->_options->archive_redirect_page   = $_POST['@plugin_label@_archive_redirect_page'];
-            $this->_options->search_redirect_page    = $_POST['@plugin_label@_search_redirect_page'];
+            $this->_options->pages_redirect_page     = $_POST['member_access_pages_redirect_page'];
+            $this->_options->posts_redirect_page     = $_POST['member_access_posts_redirect_page'];
+            $this->_options->postspage_redirect_page = $_POST['member_access_postspage_redirect_page'];
+            $this->_options->archive_redirect_page   = $_POST['member_access_archive_redirect_page'];
+            $this->_options->search_redirect_page    = $_POST['member_access_search_redirect_page'];
 
             // Booleans
-            $this->_options->pages_private           = isset($_POST['@plugin_label@_pages_private']);
-            $this->_options->pages_redirect          = isset($_POST['@plugin_label@_pages_redirect']);
-            $this->_options->posts_private           = isset($_POST['@plugin_label@_posts_private']);
-            $this->_options->posts_redirect          = isset($_POST['@plugin_label@_posts_redirect']);
-            $this->_options->postspage_excerpts      = isset($_POST['@plugin_label@_postspage_excerpts']);
-            $this->_options->postspage_redirect      = isset($_POST['@plugin_label@_postspage_redirect']);
-            $this->_options->archive_excerpts        = isset($_POST['@plugin_label@_archive_excerpts']);
-            $this->_options->archive_redirect        = isset($_POST['@plugin_label@_archive_redirect']);
-            $this->_options->search_excerpts         = isset($_POST['@plugin_label@_search_excerpts']);
-            $this->_options->search_redirect         = isset($_POST['@plugin_label@_search_redirect']);
-            $this->_options->rss_excerpts            = isset($_POST['@plugin_label@_rss_excerpts']);
+            $this->_options->pages_private           = isset($_POST['member_access_pages_private']);
+            $this->_options->pages_redirect          = isset($_POST['member_access_pages_redirect']);
+            $this->_options->posts_private           = isset($_POST['member_access_posts_private']);
+            $this->_options->posts_redirect          = isset($_POST['member_access_posts_redirect']);
+            $this->_options->postspage_excerpts      = isset($_POST['member_access_postspage_excerpts']);
+            $this->_options->postspage_redirect      = isset($_POST['member_access_postspage_redirect']);
+            $this->_options->archive_excerpts        = isset($_POST['member_access_archive_excerpts']);
+            $this->_options->archive_redirect        = isset($_POST['member_access_archive_redirect']);
+            $this->_options->search_excerpts         = isset($_POST['member_access_search_excerpts']);
+            $this->_options->search_redirect         = isset($_POST['member_access_search_redirect']);
+            $this->_options->rss_excerpts            = isset($_POST['member_access_rss_excerpts']);
 
             $this->_options->save();
 
             // Render the header message partial
-            $this->_messageHelper(__('Settings have been saved.', '@plugin_label@'));
+            $this->_messageHelper(__('Settings have been saved.', 'member_access'));
 
         }
     }
@@ -522,17 +522,17 @@ class MyPlugin
     function renderOptionsPage()
     {
         // Invoke the action hook for saving the options page.
-        do_action('@plugin_label@_save_options');
+        do_action('member_access_save_options');
 
         // Register the in_admin_footer action hook. This is done here so that
         // it only gets registered for the options page for this plugin, and
         // not every plugin.
         add_action('in_admin_footer', array($this, 'renderAdminFooter'));
 
-        $view = new MyPlugin_Structure_View('options-page.phtml');
-        $view->heading                 = sprintf(__('%s Settings', '@plugin_label@'), '@plugin_name@');
+        $view = new MemberAccess_Structure_View('options-page.phtml');
+        $view->heading                 = sprintf(__('%s Settings', 'member_access'), 'Member Access');
         $view->nonce_action            = 'update-options';
-        $view->plugin_label            = '@plugin_label@';
+        $view->plugin_label            = 'member_access';
 
         $view->pages_private           = $this->_options->pages_private;
         $view->pages_redirect          = $this->_options->pages_redirect;
@@ -568,22 +568,22 @@ class MyPlugin
      */
     function renderPageMetaBox($object, $box)
     {
-        $view = new MyPlugin_Structure_View('metabox-page.phtml');
-        $view->plugin_label       = '@plugin_label@';
-        $view->visibility         = $object->{'@plugin_label@_visibility'};
+        $view = new MemberAccess_Structure_View('metabox-page.phtml');
+        $view->plugin_label       = 'member_access';
+        $view->visibility         = $object->{'member_access_visibility'};
 
         if ($this->_options->pages_private) {
             $view->current_state_message = __(
                 'By default, pages are currently visible only to members. You '
               . 'can override that here or continue to have this page honor the '
               . 'default visibility settings.'
-            , '@plugin_label@');
+            , 'member_access');
         } else {
             $view->current_state_message = __(
                 'By default, pages are currently visible to everyone. You '
               . 'can override that here or continue to have this page honor the '
               . 'default visibility settings.'
-            , '@plugin_label@');
+            , 'member_access');
         }
 
         $view->render();
@@ -598,22 +598,22 @@ class MyPlugin
      */
     function renderPostMetaBox($object, $box)
     {
-        $view = new MyPlugin_Structure_View('metabox-post.phtml');
-        $view->plugin_label       = '@plugin_label@';
-        $view->visibility         = $object->{'@plugin_label@_visibility'};
+        $view = new MemberAccess_Structure_View('metabox-post.phtml');
+        $view->plugin_label       = 'member_access';
+        $view->visibility         = $object->{'member_access_visibility'};
 
         if ($this->_options->posts_private) {
             $view->current_state_message = __(
                 'By default, posts are currently visible only to members. You '
               . 'can override that here or continue to have this post honor the '
               . 'default visibility settings.'
-            , '@plugin_label@');
+            , 'member_access');
         } else {
             $view->current_state_message = __(
                 'By default, posts are currently visible to everyone. You '
               . 'can override that here or continue to have this post honor the '
               . 'default visibility settings.'
-            , '@plugin_label@');
+            , 'member_access');
         }
 
         $view->render();
@@ -626,8 +626,8 @@ class MyPlugin
      */
     function renderAdminScripts()
     {
-        $view = new MyPlugin_Structure_View('options-scripts.phtml');
-        $view->plugin_label = '@plugin_label@';
+        $view = new MemberAccess_Structure_View('options-scripts.phtml');
+        $view->plugin_label = 'member_access';
         $view->render();
     }
 
@@ -639,12 +639,12 @@ class MyPlugin
      */
     function renderAdminFooter()
     {
-        $view = new MyPlugin_Structure_View('options-footer.phtml');
-        $view->plugin_href    = '@plugin_uri@';
-        $view->plugin_text    = '@plugin_name@';
-        $view->plugin_version = '@plugin_version@';
-        $view->author_href    = '@author_uri@';
-        $view->author_text    = '@author_name@';
+        $view = new MemberAccess_Structure_View('options-footer.phtml');
+        $view->plugin_href    = 'http://www.chrisabernethy.com/wordpress-plugins/member-access/';
+        $view->plugin_text    = 'Member Access';
+        $view->plugin_version = '0.2';
+        $view->author_href    = 'http://www.chrisabernethy.com/';
+        $view->author_text    = 'Chris Abernethy';
         $view->render();
     }
 
@@ -660,7 +660,7 @@ class MyPlugin
      */
     function _messageHelper($message)
     {
-        $view = new MyPlugin_Structure_View('message.phtml');
+        $view = new MemberAccess_Structure_View('message.phtml');
         $view->message = $message;
         $view->render();
     }
@@ -700,14 +700,14 @@ class MyPlugin
         $result = $wpdb->query(sprintf(
             "UPDATE %s SET %s = NULL WHERE post_type = '%s'"
           , $wpdb->posts
-          , $wpdb->escape('@plugin_label@_visibility')
+          , $wpdb->escape('member_access_visibility')
           , $wpdb->escape($post_type)
         ));
 
         if (false === $result) {
-            $this->_messageHelper(__('A database error was encountered, overrides have not been cleared.', '@plugin_label@'));
+            $this->_messageHelper(__('A database error was encountered, overrides have not been cleared.', 'member_access'));
         } else {
-            $this->_messageHelper(__('Overrides have been cleared.', '@plugin_label@'));
+            $this->_messageHelper(__('Overrides have been cleared.', 'member_access'));
         }
     }
 
@@ -735,9 +735,9 @@ class MyPlugin
             return false;
         }
 
-        $plugin = MyPlugin::instance();
+        $plugin = MemberAccess::instance();
         
-        $visibility = $post->{'@plugin_label@_visibility'};
+        $visibility = $post->{'member_access_visibility'};
         if ('default' === $visibility) {
             if ('post' == $post->post_type && $plugin->getOption('posts_private')) {
                 $visibility = 'private';

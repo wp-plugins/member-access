@@ -1,18 +1,18 @@
 === Plugin Name ===
 Contributors: Brownoxford
-Donate link: @author_uri@donate/
+Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.6
 Tested up to: 2.6.2
 Stable tag: 0.1
 
-@plugin_description@
+Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
 == Description ==
 
-**Please Note**: *This plugin is in testing status. It will not corrupt your data, but it may not display everything as you expect. Please take it for a spin, all feedback is welcome and can be submitted [here](@author_uri@contact/ "Send Feedback")*
+**Please Note**: *This plugin is in testing status. It will not corrupt your data, but it may not display everything as you expect. Please take it for a spin, all feedback is welcome and can be submitted [here](http://www.chrisabernethy.com/contact/ "Send Feedback")*
 
-@plugin_name@ allows a WordPress administrator to make individual posts and pages accessible only to logged-in members. @plugin_name@ allows global configuration so that all posts or pages can be viewable by everyone (the default) or only by members, and it also allows each post and page to override the global setting.
+Member Access allows a WordPress administrator to make individual posts and pages accessible only to logged-in members. Member Access allows global configuration so that all posts or pages can be viewable by everyone (the default) or only by members, and it also allows each post and page to override the global setting.
 
 WordPress pages which display multiple posts, such as search results, archives and RSS feeds, can be configured to either omit entirely content that is only available to members or to include an excerpt for that content to entice non-members to sign-up.
 
@@ -22,22 +22,22 @@ Non-members can be redirected to the WordPress login page, or to a page of the a
 
 More info:
 
-* [@plugin_name@](@plugin_uri@ "@plugin_name@") plugin.
-* Check out the other [WordPress plugins](@author_uri@wordpress-plugins/ "Other WordPress Plugins by @author_name@") by the same author.
+* [Member Access](http://www.chrisabernethy.com/wordpress-plugins/member-access/ "Member Access") plugin.
+* Check out the other [WordPress plugins](http://www.chrisabernethy.com/wordpress-plugins/ "Other WordPress Plugins by Chris Abernethy") by the same author.
 
 == Installation ==
 
-Installing @plugin_name@ is easy:
+Installing Member Access is easy:
 
 * Download and unzip the plugin.
-* Copy the @plugin_label@ folder to the plugins directory of your blog.
+* Copy the member_access folder to the plugins directory of your blog.
 * Enable the plugin in your admin panel.
 * An options panel will appear under Plugins.
 * Choose the settings you want.
 
 == Screenshots ==
 
-1. This screenshot shows the @plugin_name@ options screen.
+1. This screenshot shows the Member Access options screen.
 2. This screenshot shows the Write Post interface where global settings can be overridden for a single post.
 3. This screenshot is from the Manage Posts interface. The 'Visibility' column shows the visibility status for each listed post.
 
@@ -60,6 +60,6 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 
 == More Information ==
 
-* For more info, version history, etc. check out the page on my site about the [@plugin_name@ plugin](@plugin_uri@ "@plugin_name@"). 
-* To check out the other WordPress plugins I wrote, visit my [WordPress plugins](@author_uri@wordpress-plugins/ "Other WordPress Plugins by @author_name@") page.
-* For updates about this plugin and the other plugins that I maintain, read my [consulting blog](@author_uri@ "@author_name@")
+* For more info, version history, etc. check out the page on my site about the [Member Access plugin](http://www.chrisabernethy.com/wordpress-plugins/member-access/ "Member Access"). 
+* To check out the other WordPress plugins I wrote, visit my [WordPress plugins](http://www.chrisabernethy.com/wordpress-plugins/ "Other WordPress Plugins by Chris Abernethy") page.
+* For updates about this plugin and the other plugins that I maintain, read my [consulting blog](http://www.chrisabernethy.com/ "Chris Abernethy")
