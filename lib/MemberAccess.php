@@ -121,7 +121,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->_options->version, '0.2', '<')) {
+        if (version_compare($this->_options->version, '0.1.1', '<')) {
             $this->_upgrade();
             return;
         }
@@ -152,7 +152,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->_options->version                 = '0.2';
+        $this->_options->version                 = '0.1.1';
 
         $this->_options->pages_private           = false;
         $this->_options->pages_redirect          = false;
@@ -187,6 +187,7 @@ class MemberAccess
      */
     function _uninstall()
     {
+        global $wpdb;
 
         // Remove the visibility field from the wp_posts table.
         $wpdb->query(sprintf(
@@ -197,7 +198,6 @@ class MemberAccess
 
         // Remove all plugin options from the wp_options table.
         $this->_options->delete();
-
     }
 
     /**
@@ -212,7 +212,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->_options->version = '3.5';
         //}
-        $this->_options->version = '0.2';
+        $this->_options->version = '0.1.1';
         $this->_options->save();
     }
 
@@ -241,7 +241,7 @@ class MemberAccess
             // conditional tags. If we have not opted to show excerpts on any
             // multi-post pages, or we are viewing a single-post page, simply
             // filter out the post.
-            if (self::isPrivate($the_post->ID)) {
+            if (MemberAccess::isPrivate($the_post->ID)) {
                 switch(true) {
                     case is_page():
                     case is_single():
@@ -378,7 +378,7 @@ class MemberAccess
                 case 'private': $visibility = __('Members');  break;
                 case 'default':
                     $visibility = __('Default (Everyone)');
-                    if (self::isPrivate($post_id)) {
+                    if (MemberAccess::isPrivate($post_id)) {
                         $visibility = __('Default (Members)');
                     }
                     break;
@@ -642,7 +642,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->plugin_href    = 'http://www.chrisabernethy.com/wordpress-plugins/member-access/';
         $view->plugin_text    = 'Member Access';
-        $view->plugin_version = '0.2';
+        $view->plugin_version = '0.1.1';
         $view->author_href    = 'http://www.chrisabernethy.com/';
         $view->author_text    = 'Chris Abernethy';
         $view->render();
@@ -681,7 +681,7 @@ class MemberAccess
         $redirect_to = urlencode($proto . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         $page = get_page($page_id);
-        if (null === $page || self::isPrivate($page)) {
+        if (null === $page || MemberAccess::isPrivate($page)) {
             wp_redirect(site_url("wp-login.php?redirect_to=$redirect_to"));
             exit;
         }
@@ -697,6 +697,8 @@ class MemberAccess
      */
     function _clearOverrides($post_type)
     {
+        global $wpdb;
+
         $result = $wpdb->query(sprintf(
             "UPDATE %s SET %s = NULL WHERE post_type = '%s'"
           , $wpdb->posts

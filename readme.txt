@@ -3,8 +3,8 @@ Contributors: Brownoxford
 Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.6
-Tested up to: 2.6.2
-Stable tag: 0.1
+Tested up to: 2.6.3
+Stable tag: 0.1.1
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
@@ -24,6 +24,7 @@ More info:
 
 * [Member Access](http://www.chrisabernethy.com/wordpress-plugins/member-access/ "Member Access") plugin.
 * Check out the other [WordPress plugins](http://www.chrisabernethy.com/wordpress-plugins/ "Other WordPress Plugins by Chris Abernethy") by the same author.
+* To be notified of plugin updates, [follow me on Twitter!](http://twitter.com/brownoxford "Follow me on Twitter!")
 
 == Installation ==
 
@@ -56,10 +57,10 @@ This plugin provides the template tag `member_access_is_private()` that can be u
     <?endif;?>
 <?php endwhile; endif; ?>`
 
-You should also keep in mind that calls to `the_content()` from within the loop may instead function as though `the_excerpt()` was called if the administrator has configured the plugin to show excerpts for nonpubluc content.
+You should also keep in mind that calls to `the_content()` from within the loop may instead function as though `the_excerpt()` was called if the administrator has configured the plugin to show excerpts for non-public content.
 
 == More Information ==
 
 * For more info, version history, etc. check out the page on my site about the [Member Access plugin](http://www.chrisabernethy.com/wordpress-plugins/member-access/ "Member Access"). 
 * To check out the other WordPress plugins I wrote, visit my [WordPress plugins](http://www.chrisabernethy.com/wordpress-plugins/ "Other WordPress Plugins by Chris Abernethy") page.
-* For updates about this plugin and the other plugins that I maintain, read my [consulting blog](http://www.chrisabernethy.com/ "Chris Abernethy")
+* For updates about this plugin and the other plugins that I maintain, read my [consulting blog](http://www.chrisabernethy.com/ "Chris Abernethy") or [follow me on Twitter!](http://twitter.com/brownoxford "Follow me on Twitter!")

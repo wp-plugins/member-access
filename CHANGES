@@ -1,0 +1,7 @@
+0.1
+Initial Release.
+===
+0.1.1
+===
+Bug #8: Code still includes use of 'self' keyword
+Bug #9: Call to a member function query() on a non-object
