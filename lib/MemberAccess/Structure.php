@@ -68,4 +68,9 @@ class MemberAccess_Structure
 
 }
 
+// Make sure that property overloading is enabled for PHP4 users.
+if (function_exists('overload')) {
+    overload('MemberAccess_Structure');
+}
+
 /* EOF */

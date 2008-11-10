@@ -5,3 +5,8 @@ Initial Release.
 ===
 Bug #8: Code still includes use of 'self' keyword
 Bug #9: Call to a member function query() on a non-object
+===
+0.1.2
+===
+Bug #27: Settings link on plugin page doesn't display
+Bug #28: Object overloading does not work by default in PHP4

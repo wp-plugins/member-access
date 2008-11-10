@@ -78,7 +78,7 @@ class MemberAccess
      */
     function run($plugin_file)
     {
-        $plugin = MemberAccess::instance($class_name);
+        $plugin = MemberAccess::instance();
 
         // Activation and deactivation hooks have special registration
         // functions that handle sanitization of the given filename. It
@@ -121,7 +121,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->_options->version, '0.1.1', '<')) {
+        if (version_compare($this->_options->version, '0.1.2', '<')) {
             $this->_upgrade();
             return;
         }
@@ -152,7 +152,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->_options->version                 = '0.1.1';
+        $this->_options->version                 = '0.1.2';
 
         $this->_options->pages_private           = false;
         $this->_options->pages_redirect          = false;
@@ -212,7 +212,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->_options->version = '3.5';
         //}
-        $this->_options->version = '0.1.1';
+        $this->_options->version = '0.1.2';
         $this->_options->save();
     }
 
@@ -447,7 +447,13 @@ class MemberAccess
      */
     function renderOptionsLink($links, $file)
     {
-        if ('member_access' == dirname($file)) {
+        static $plugin_dir = null;
+        if(null === $plugin_dir) {
+            $plugin_dir = plugin_basename(__FILE__);
+            $plugin_dir = substr($plugin_dir, 0, stripos($plugin_dir, '/'));
+        }
+
+        if (dirname($file) == $plugin_dir) {
             $view = new MemberAccess_Structure_View('options-link.phtml');
             $view->link_href  = 'plugins.php?page=member_access';
             $view->link_title = sprintf(__('%s Settings', 'member_access'), 'Member Access');
@@ -642,7 +648,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->plugin_href    = 'http://www.chrisabernethy.com/wordpress-plugins/member-access/';
         $view->plugin_text    = 'Member Access';
-        $view->plugin_version = '0.1.1';
+        $view->plugin_version = '0.1.2';
         $view->author_href    = 'http://www.chrisabernethy.com/';
         $view->author_text    = 'Chris Abernethy';
         $view->render();
