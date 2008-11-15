@@ -85,23 +85,23 @@ class MemberAccess
         // is recommended that these be used rather than directly adding
         // an action callback for 'activate_<filename>'.
 
-        register_activation_hook  ($plugin_file, array($plugin, 'hookActivation'));
-        register_deactivation_hook($plugin_file, array($plugin, 'hookDeactivation'));
+        register_activation_hook  ($plugin_file, array(&$plugin, 'hookActivation'));
+        register_deactivation_hook($plugin_file, array(&$plugin, 'hookDeactivation'));
 
         // Set up action callbacks.
-        add_action('admin_menu'                 , array($plugin, 'registerOptionsPage'));
-        add_action('do_meta_boxes'              , array($plugin, 'registerMetaBoxes'), 10, 3);
-        add_action('manage_pages_custom_column' , array($plugin, 'renderPostsColumns'), 10, 2);
-        add_action('manage_posts_custom_column' , array($plugin, 'renderPostsColumns'), 10, 2);
-        add_action('wp_insert_post'             , array($plugin, 'updatePostVisibility'));
-        add_action('member_access_save_options', array($plugin, 'saveOptionsPage'));
+        add_action('admin_menu'                 , array(&$plugin, 'registerOptionsPage'));
+        add_action('do_meta_boxes'              , array(&$plugin, 'registerMetaBoxes'), 10, 3);
+        add_action('manage_pages_custom_column' , array(&$plugin, 'renderPostsColumns'), 10, 2);
+        add_action('manage_posts_custom_column' , array(&$plugin, 'renderPostsColumns'), 10, 2);
+        add_action('wp_insert_post'             , array(&$plugin, 'updatePostVisibility'));
+        add_action('member_access_save_options', array(&$plugin, 'saveOptionsPage'));
 
         // Set up filter callbacks.
-        add_filter('the_posts'                  , array($plugin, 'filterPosts'));
-        add_filter('the_content'                , array($plugin, 'filterContent'));
-        add_filter('manage_pages_columns'       , array($plugin, 'registerPostsColumns'));
-        add_filter('manage_posts_columns'       , array($plugin, 'registerPostsColumns'));
-        add_filter('plugin_action_links'        , array($plugin, 'renderOptionsLink'), 10, 2);
+        add_filter('the_posts'                  , array(&$plugin, 'filterPosts'));
+        add_filter('the_content'                , array(&$plugin, 'filterContent'));
+        add_filter('manage_pages_columns'       , array(&$plugin, 'registerPostsColumns'));
+        add_filter('manage_posts_columns'       , array(&$plugin, 'registerPostsColumns'));
+        add_filter('plugin_action_links'        , array(&$plugin, 'renderOptionsLink'), 10, 2);
     }
 
     /**
@@ -114,14 +114,14 @@ class MemberAccess
         // If 'version' is not yet set in the options array, this is a first
         // time install scenario. Perform the initial database and options
         // setup.
-        if (null === $this->_options->version) {
+        if (null === $this->getOption('version')) {
             $this->_install();
             return;
         }
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->_options->version, '0.1.2', '<')) {
+        if (version_compare($this->getOption('version'), '0.1.2', '<')) {
             $this->_upgrade();
             return;
         }
@@ -152,29 +152,29 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->_options->version                 = '0.1.2';
+        $this->setOption('version'                , '0.1.2');
 
-        $this->_options->pages_private           = false;
-        $this->_options->pages_redirect          = false;
-        $this->_options->pages_redirect_page     = 0;
+        $this->setOption('pages_private'          , false);
+        $this->setOption('pages_redirect'         , false);
+        $this->setOption('pages_redirect_page'    , 0);
         
-        $this->_options->posts_private           = false;
-        $this->_options->posts_redirect          = false;
-        $this->_options->posts_redirect_page     = 0;
+        $this->setOption('posts_private'          , false);
+        $this->setOption('posts_redirect'         , false);
+        $this->setOption('posts_redirect_page'    , 0);
 
-        $this->_options->postspage_excerpts      = false;
-        $this->_options->postspage_redirect      = false;
-        $this->_options->postspage_redirect_page = 0;
+        $this->setOption('postspage_excerpts'     , false);
+        $this->setOption('postspage_redirect'     , false);
+        $this->setOption('postspage_redirect_page', 0);
 
-        $this->_options->archive_excerpts        = false;
-        $this->_options->archive_redirect        = false;
-        $this->_options->archive_redirect_page   = 0;
+        $this->setOption('archive_excerpts'       , false);
+        $this->setOption('archive_redirect'       , false);
+        $this->setOption('archive_redirect_page'  , 0);
 
-        $this->_options->search_excerpts         = false;
-        $this->_options->search_redirect         = false;
-        $this->_options->search_redirect_page    = 0;
+        $this->setOption('search_excerpts'        , false);
+        $this->setOption('search_redirect'        , false);
+        $this->setOption('search_redirect_page'   , 0);
 
-        $this->_options->rss_excerpts            = false;
+        $this->setOption('rss_excerpts'           , false);
 
         $this->_options->save();
     }
@@ -207,12 +207,12 @@ class MemberAccess
     function _upgrade()
     {
         // Upgrade Example
-        //$old_version = $this->_options->version;
+        //$old_version = $this->getOption('version');
         //if (version_compare($old_version, '3.5', '<')) {
         //    // Do upgrades for version 3.5
-        //    $this->_options->version = '3.5';
+        //    $this->setOption('version', '3.5');
         //}
-        $this->_options->version = '0.1.2';
+        $this->setOption('version', '0.1.2');
         $this->_options->save();
     }
 
@@ -245,10 +245,10 @@ class MemberAccess
                 switch(true) {
                     case is_page():
                     case is_single():
-                    case is_home()    && !$this->_options->postspage_excerpts;
-                    case is_archive() && !$this->_options->archive_excerpts:
-                    case is_search()  && !$this->_options->search_excerpts:
-                    case is_feed()    && !$this->_options->rss_excerpts:
+                    case is_home()    && !$this->getOption('postspage_excerpts');
+                    case is_archive() && !$this->getOption('archive_excerpts'):
+                    case is_search()  && !$this->getOption('search_excerpts'):
+                    case is_feed()    && !$this->getOption('rss_excerpts'):
                         continue 2;
                 }
             }
@@ -263,24 +263,24 @@ class MemberAccess
         // allow the flow to continue as though no posts were found.
         if (empty($filtered_posts)) {
 
-            if (is_page() && $this->_options->pages_redirect) {
-                $this->_redirect($this->_options->pages_redirect_page);
+            if (is_page() && $this->getOption('pages_redirect')) {
+                $this->_redirect($this->getOption('pages_redirect_page'));
             }
             
-            if (is_single() && $this->_options->posts_redirect) {
-                $this->_redirect($this->_options->posts_redirect_page);
+            if (is_single() && $this->getOption('posts_redirect')) {
+                $this->_redirect($this->getOption('posts_redirect_page'));
             }
 
-            if (is_home() && $this->_options->postspage_redirect) {
-                $this->_redirect($this->_options->postspage_redirect_page);
+            if (is_home() && $this->getOption('postspage_redirect')) {
+                $this->_redirect($this->getOption('postspage_redirect_page'));
             }
 
-            if (is_archive() && $this->_options->archive_redirect) {
-                $this->_redirect($this->_options->archive_redirect_page);
+            if (is_archive() && $this->getOption('archive_redirect')) {
+                $this->_redirect($this->getOption('archive_redirect_page'));
             }
 
-            if (is_search() && $this->_options->search_redirect) {
-                $this->_redirect($this->_options->search_redirect_page);
+            if (is_search() && $this->getOption('search_redirect')) {
+                $this->_redirect($this->getOption('search_redirect_page'));
             }
 
         }
@@ -304,10 +304,10 @@ class MemberAccess
         }
 
         switch(true) {
-            case is_home()    && $this->_options->postspage_excerpts:
-            case is_archive() && $this->_options->archive_excerpts:
-            case is_search()  && $this->_options->search_excerpts:
-            case is_feed()    && $this->_options->rss_excerpts:
+            case is_home()    && $this->getOption('postspage_excerpts'):
+            case is_archive() && $this->getOption('archive_excerpts'):
+            case is_search()  && $this->getOption('search_excerpts'):
+            case is_feed()    && $this->getOption('rss_excerpts'):
                 $content = get_the_excerpt();
                 break;
         }
@@ -331,13 +331,13 @@ class MemberAccess
           , wp_specialchars('Member Access')  // menu_title
           , 'manage_options'                  // access_level
           , 'member_access'                  // file
-          , array($this, 'renderOptionsPage') // function
+          , array(&$this, 'renderOptionsPage') // function
         );
 
         // Get our admin javascript and css into the page header. We only want
         // it for this plugin's option page, which is why this is action hook
         // is registered here and not as a global hook.
-        add_action( "admin_print_scripts-$page", array($this, 'renderAdminScripts'));
+        add_action( "admin_print_scripts-$page", array(&$this, 'renderAdminScripts'));
     }
 
     /**
@@ -355,7 +355,7 @@ class MemberAccess
             add_meta_box(
                 attribute_escape('member_access') // id attribute
               , wp_specialchars('Member Access')   // metabox title
-              , array($this, $callback)            // callback function
+              , array(&$this, $callback)           // callback function
               , $page                              // page type
             );
         }
@@ -455,9 +455,9 @@ class MemberAccess
 
         if (dirname($file) == $plugin_dir) {
             $view = new MemberAccess_Structure_View('options-link.phtml');
-            $view->link_href  = 'plugins.php?page=member_access';
-            $view->link_title = sprintf(__('%s Settings', 'member_access'), 'Member Access');
-            $view->link_text  = __('Settings', 'member_access');
+            $view->set('link_href' , 'plugins.php?page=member_access');
+            $view->set('link_title', sprintf(__('%s Settings', 'member_access'), 'Member Access'));
+            $view->set('link_text' , __('Settings', 'member_access'));
             ob_start();
             $view->render();
             array_unshift($links, ob_get_clean());
@@ -489,24 +489,24 @@ class MemberAccess
             }
 
             // Non-Booleans
-            $this->_options->pages_redirect_page     = $_POST['member_access_pages_redirect_page'];
-            $this->_options->posts_redirect_page     = $_POST['member_access_posts_redirect_page'];
-            $this->_options->postspage_redirect_page = $_POST['member_access_postspage_redirect_page'];
-            $this->_options->archive_redirect_page   = $_POST['member_access_archive_redirect_page'];
-            $this->_options->search_redirect_page    = $_POST['member_access_search_redirect_page'];
+            $this->setOption('pages_redirect_page'    , $_POST['member_access_pages_redirect_page']);
+            $this->setOption('posts_redirect_page'    , $_POST['member_access_posts_redirect_page']);
+            $this->setOption('postspage_redirect_page', $_POST['member_access_postspage_redirect_page']);
+            $this->setOption('archive_redirect_page'  , $_POST['member_access_archive_redirect_page']);
+            $this->setOption('search_redirect_page'   , $_POST['member_access_search_redirect_page']);
 
             // Booleans
-            $this->_options->pages_private           = isset($_POST['member_access_pages_private']);
-            $this->_options->pages_redirect          = isset($_POST['member_access_pages_redirect']);
-            $this->_options->posts_private           = isset($_POST['member_access_posts_private']);
-            $this->_options->posts_redirect          = isset($_POST['member_access_posts_redirect']);
-            $this->_options->postspage_excerpts      = isset($_POST['member_access_postspage_excerpts']);
-            $this->_options->postspage_redirect      = isset($_POST['member_access_postspage_redirect']);
-            $this->_options->archive_excerpts        = isset($_POST['member_access_archive_excerpts']);
-            $this->_options->archive_redirect        = isset($_POST['member_access_archive_redirect']);
-            $this->_options->search_excerpts         = isset($_POST['member_access_search_excerpts']);
-            $this->_options->search_redirect         = isset($_POST['member_access_search_redirect']);
-            $this->_options->rss_excerpts            = isset($_POST['member_access_rss_excerpts']);
+            $this->setOption('pages_private'          , isset($_POST['member_access_pages_private']));
+            $this->setOption('pages_redirect'         , isset($_POST['member_access_pages_redirect']));
+            $this->setOption('posts_private'          , isset($_POST['member_access_posts_private']));
+            $this->setOption('posts_redirect'         , isset($_POST['member_access_posts_redirect']));
+            $this->setOption('postspage_excerpts'     , isset($_POST['member_access_postspage_excerpts']));
+            $this->setOption('postspage_redirect'     , isset($_POST['member_access_postspage_redirect']));
+            $this->setOption('archive_excerpts'       , isset($_POST['member_access_archive_excerpts']));
+            $this->setOption('archive_redirect'       , isset($_POST['member_access_archive_redirect']));
+            $this->setOption('search_excerpts'        , isset($_POST['member_access_search_excerpts']));
+            $this->setOption('search_redirect'        , isset($_POST['member_access_search_redirect']));
+            $this->setOption('rss_excerpts'           , isset($_POST['member_access_rss_excerpts']));
 
             $this->_options->save();
 
@@ -533,34 +533,34 @@ class MemberAccess
         // Register the in_admin_footer action hook. This is done here so that
         // it only gets registered for the options page for this plugin, and
         // not every plugin.
-        add_action('in_admin_footer', array($this, 'renderAdminFooter'));
+        add_action('in_admin_footer', array(&$this, 'renderAdminFooter'));
 
         $view = new MemberAccess_Structure_View('options-page.phtml');
-        $view->heading                 = sprintf(__('%s Settings', 'member_access'), 'Member Access');
-        $view->nonce_action            = 'update-options';
-        $view->plugin_label            = 'member_access';
+        $view->set('heading'                , sprintf(__('%s Settings', 'member_access'), 'Member Access'));
+        $view->set('nonce_action'           , 'update-options');
+        $view->set('plugin_label'           , 'member_access');
 
-        $view->pages_private           = $this->_options->pages_private;
-        $view->pages_redirect          = $this->_options->pages_redirect;
-        $view->pages_redirect_page     = $this->_options->pages_redirect_page;
+        $view->set('pages_private'          , $this->getOption('pages_private'));
+        $view->set('pages_redirect'         , $this->getOption('pages_redirect'));
+        $view->set('pages_redirect_page'    , $this->getOption('pages_redirect_page'));
         
-        $view->posts_private           = $this->_options->posts_private;
-        $view->posts_redirect          = $this->_options->posts_redirect;
-        $view->posts_redirect_page     = $this->_options->posts_redirect_page;
+        $view->set('posts_private'          , $this->getOption('posts_private'));
+        $view->set('posts_redirect'         , $this->getOption('posts_redirect'));
+        $view->set('posts_redirect_page'    , $this->getOption('posts_redirect_page'));
 
-        $view->postspage_excerpts      = $this->_options->postspage_excerpts;
-        $view->postspage_redirect      = $this->_options->postspage_redirect;
-        $view->postspage_redirect_page = $this->_options->postspage_redirect_page;
+        $view->set('postspage_excerpts'     , $this->getOption('postspage_excerpts'));
+        $view->set('postspage_redirect'     , $this->getOption('postspage_redirect'));
+        $view->set('postspage_redirect_page', $this->getOption('postspage_redirect_page'));
 
-        $view->archive_excerpts        = $this->_options->archive_excerpts;
-        $view->archive_redirect        = $this->_options->archive_redirect;
-        $view->archive_redirect_page   = $this->_options->archive_redirect_page;
+        $view->set('archive_excerpts'       , $this->getOption('archive_excerpts'));
+        $view->set('archive_redirect'       , $this->getOption('archive_redirect'));
+        $view->set('archive_redirect_page'  , $this->getOption('archive_redirect_page'));
 
-        $view->search_excerpts         = $this->_options->search_excerpts;
-        $view->search_redirect         = $this->_options->search_redirect;
-        $view->search_redirect_page    = $this->_options->search_redirect_page;
+        $view->set('search_excerpts'        , $this->getOption('search_excerpts'));
+        $view->set('search_redirect'        , $this->getOption('search_redirect'));
+        $view->set('search_redirect_page'   , $this->getOption('search_redirect_page'));
 
-        $view->rss_excerpts            = $this->_options->rss_excerpts;
+        $view->set('rss_excerpts'           , $this->getOption('rss_excerpts'));
 
         $view->render();
     }
@@ -575,21 +575,21 @@ class MemberAccess
     function renderPageMetaBox($object, $box)
     {
         $view = new MemberAccess_Structure_View('metabox-page.phtml');
-        $view->plugin_label       = 'member_access';
-        $view->visibility         = $object->{'member_access_visibility'};
+        $view->set('plugin_label', 'member_access');
+        $view->set('visibility'  , $object->{'member_access_visibility'});
 
-        if ($this->_options->pages_private) {
-            $view->current_state_message = __(
+        if ($this->getOption('pages_private')) {
+            $view->set('current_state_message', __(
                 'By default, pages are currently visible only to members. You '
               . 'can override that here or continue to have this page honor the '
               . 'default visibility settings.'
-            , 'member_access');
+            , 'member_access'));
         } else {
-            $view->current_state_message = __(
+            $view->set('current_state_message', __(
                 'By default, pages are currently visible to everyone. You '
               . 'can override that here or continue to have this page honor the '
               . 'default visibility settings.'
-            , 'member_access');
+            , 'member_access'));
         }
 
         $view->render();
@@ -605,21 +605,21 @@ class MemberAccess
     function renderPostMetaBox($object, $box)
     {
         $view = new MemberAccess_Structure_View('metabox-post.phtml');
-        $view->plugin_label       = 'member_access';
-        $view->visibility         = $object->{'member_access_visibility'};
+        $view->set('plugin_label', 'member_access');
+        $view->set('visibility'  , $object->{'member_access_visibility'});
 
-        if ($this->_options->posts_private) {
-            $view->current_state_message = __(
+        if ($this->getOption('posts_private')) {
+            $view->set('current_state_message', __(
                 'By default, posts are currently visible only to members. You '
               . 'can override that here or continue to have this post honor the '
               . 'default visibility settings.'
-            , 'member_access');
+            , 'member_access'));
         } else {
-            $view->current_state_message = __(
+            $view->set('current_state_message', __(
                 'By default, posts are currently visible to everyone. You '
               . 'can override that here or continue to have this post honor the '
               . 'default visibility settings.'
-            , 'member_access');
+            , 'member_access'));
         }
 
         $view->render();
@@ -633,7 +633,7 @@ class MemberAccess
     function renderAdminScripts()
     {
         $view = new MemberAccess_Structure_View('options-scripts.phtml');
-        $view->plugin_label = 'member_access';
+        $view->set('plugin_label', 'member_access');
         $view->render();
     }
 
@@ -646,11 +646,11 @@ class MemberAccess
     function renderAdminFooter()
     {
         $view = new MemberAccess_Structure_View('options-footer.phtml');
-        $view->plugin_href    = 'http://www.chrisabernethy.com/wordpress-plugins/member-access/';
-        $view->plugin_text    = 'Member Access';
-        $view->plugin_version = '0.1.2';
-        $view->author_href    = 'http://www.chrisabernethy.com/';
-        $view->author_text    = 'Chris Abernethy';
+        $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
+        $view->set('plugin_text'   , 'Member Access');
+        $view->set('plugin_version', '0.1.2');
+        $view->set('author_href'   , 'http://www.chrisabernethy.com/');
+        $view->set('author_text'   , 'Chris Abernethy');
         $view->render();
     }
 
@@ -667,7 +667,7 @@ class MemberAccess
     function _messageHelper($message)
     {
         $view = new MemberAccess_Structure_View('message.phtml');
-        $view->message = $message;
+        $view->set('message', $message);
         $view->render();
     }
 
@@ -767,7 +767,19 @@ class MemberAccess
      */
     function getOption($option_name)
     {
-        return $this->_options->$option_name;
+        return $this->_options->get($option_name);
+    }
+
+    /**
+     * This accessor grants write access to the internal options object so that
+     * option values can be changed.
+     *
+     * @param string $option_name
+     * @param mixed $option_value
+     */
+    function setOption($option_name, $option_value)
+    {
+        $this->_options->set($option_name, $option_value);
     }
 
 };

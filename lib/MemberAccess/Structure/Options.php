@@ -22,7 +22,7 @@
 /**
  * This class is meant to be used as a base class for those subclasses that need
  * to function as simple data structures at their core. Data is stored in a
- * member variable and is accessed via the PHP overloading methods.
+ * member variable and is accessed via accessor methods.
  */
 class MemberAccess_Structure_Options extends MemberAccess_Structure
 {

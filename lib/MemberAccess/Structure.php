@@ -22,14 +22,14 @@
 /**
  * This class is meant to be used as a base class for those subclasses that need
  * to function as simple data structures at their core. Data is stored in a
- * member variable and is accessed via the PHP overloading methods.
+ * member variable and is accessed via accessor methods.
  */
 class MemberAccess_Structure
 {
 
     /**
-     * This member variable holds the data that is accessible via the 'magic'
-     * overloading methods __get() and __set().
+     * This member variable holds the data that is accessible via the get()
+     * and set() accessor methods.
      *
      * @var array $_options
      */
@@ -42,7 +42,7 @@ class MemberAccess_Structure
      * @param mixed $name
      * @param mixed $value
      */
-    function __set($name, $value) {
+    function set($name, $value) {
         $this->_data[$name] = $value;
     }
 
@@ -53,7 +53,7 @@ class MemberAccess_Structure
      * @param string $key The variable name.
      * @return null
      */
-    function __get($key)
+    function get($key)
     {
         if (array_key_exists($key, $this->_data)) {
             return $this->_data[$key];
@@ -66,11 +66,6 @@ class MemberAccess_Structure
         return null;
     }
 
-}
-
-// Make sure that property overloading is enabled for PHP4 users.
-if (function_exists('overload')) {
-    overload('MemberAccess_Structure');
 }
 
 /* EOF */

@@ -19,7 +19,7 @@
  * 
  */
 ?>
-<a href="<?php echo attribute_escape($this->link_href) ?>"
-   title="<?php echo attribute_escape($this->link_title) ?>">
-    <?php echo wp_specialchars($this->link_text) ?>
+<a href="<?php echo attribute_escape($this->get('link_href')) ?>"
+   title="<?php echo attribute_escape($this->get('link_title')) ?>">
+    <?php echo wp_specialchars($this->get('link_text')) ?>
 </a>

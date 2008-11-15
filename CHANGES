@@ -10,3 +10,8 @@ Bug #9: Call to a member function query() on a non-object
 ===
 Bug #27: Settings link on plugin page doesn't display
 Bug #28: Object overloading does not work by default in PHP4
+===
+0.1.3
+===
+Bug #29: Plugin still broken for some PHP4 installations
+===
