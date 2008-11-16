@@ -121,7 +121,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->getOption('version'), '0.1.2', '<')) {
+        if (version_compare($this->getOption('version'), '0.1.3', '<')) {
             $this->_upgrade();
             return;
         }
@@ -152,7 +152,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->setOption('version'                , '0.1.2');
+        $this->setOption('version'                , '0.1.3');
 
         $this->setOption('pages_private'          , false);
         $this->setOption('pages_redirect'         , false);
@@ -212,7 +212,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->setOption('version', '3.5');
         //}
-        $this->setOption('version', '0.1.2');
+        $this->setOption('version', '0.1.3');
         $this->_options->save();
     }
 
@@ -648,7 +648,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
         $view->set('plugin_text'   , 'Member Access');
-        $view->set('plugin_version', '0.1.2');
+        $view->set('plugin_version', '0.1.3');
         $view->set('author_href'   , 'http://www.chrisabernethy.com/');
         $view->set('author_text'   , 'Chris Abernethy');
         $view->render();
