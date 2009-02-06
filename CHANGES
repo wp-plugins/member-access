@@ -17,7 +17,7 @@ Bug #29: Plugin still broken for some PHP4 installations
 ===
 0.1.4
 ===
-Implemented i19n hooks and added default messages.pot for translators.
+Implemented i18n hooks and added default messages.pot for translators.
 Fixed problem with quick-edit nuking per-post plugin settings.
 Validated for use with WordPress 2.7
 ===
