@@ -3,12 +3,12 @@
  * Copyright 2008 Chris Abernethy
  *
  * This file is part of Member Access.
- * 
+ *
  * Member Access is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Member Access is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Member Access.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 /**
@@ -73,12 +73,15 @@ class MemberAccess
      * <pre>
      * MemberAccess::run(__FILE__)
      * </pre>
-     * 
+     *
      * @param string $plugin_file The full path to the plugin bootstrap file.
      */
     function run($plugin_file)
     {
         $plugin = MemberAccess::instance();
+
+        // Configure localization.
+        load_plugin_textdomain('member_access', false, 'locale');
 
         // Activation and deactivation hooks have special registration
         // functions that handle sanitization of the given filename. It
@@ -93,7 +96,7 @@ class MemberAccess
         add_action('do_meta_boxes'              , array(&$plugin, 'registerMetaBoxes'), 10, 3);
         add_action('manage_pages_custom_column' , array(&$plugin, 'renderPostsColumns'), 10, 2);
         add_action('manage_posts_custom_column' , array(&$plugin, 'renderPostsColumns'), 10, 2);
-        add_action('wp_insert_post'             , array(&$plugin, 'updatePostVisibility'));
+        add_action('wp_insert_post'             , array(&$plugin, 'updatePost'));
         add_action('member_access_save_options', array(&$plugin, 'saveOptionsPage'));
 
         // Set up filter callbacks.
@@ -121,7 +124,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->getOption('version'), '0.1.3', '<')) {
+        if (version_compare($this->getOption('version'), '0.1.4', '<')) {
             $this->_upgrade();
             return;
         }
@@ -152,12 +155,12 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->setOption('version'                , '0.1.3');
+        $this->setOption('version'                , '0.1.4');
 
         $this->setOption('pages_private'          , false);
         $this->setOption('pages_redirect'         , false);
         $this->setOption('pages_redirect_page'    , 0);
-        
+
         $this->setOption('posts_private'          , false);
         $this->setOption('posts_redirect'         , false);
         $this->setOption('posts_redirect_page'    , 0);
@@ -212,7 +215,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->setOption('version', '3.5');
         //}
-        $this->setOption('version', '0.1.3');
+        $this->setOption('version', '0.1.4');
         $this->_options->save();
     }
 
@@ -223,7 +226,7 @@ class MemberAccess
     /**
      * This is a filter callback for the 'the_posts' filter, which is invoked
      * after the posts have been loaded in the WP_Query object.
-     * 
+     *
      * @param array $posts
      */
     function filterPosts($posts)
@@ -266,7 +269,7 @@ class MemberAccess
             if (is_page() && $this->getOption('pages_redirect')) {
                 $this->_redirect($this->getOption('pages_redirect_page'));
             }
-            
+
             if (is_single() && $this->getOption('posts_redirect')) {
                 $this->_redirect($this->getOption('posts_redirect_page'));
             }
@@ -319,7 +322,7 @@ class MemberAccess
      * This is the admin_menu activation hook callback, it adds a sub-menu
      * navigation item for this plugin to the plugins.php page and links it to
      * the renderOptionsPage() method.
-     * 
+     *
      * Plugins wishing to change this default behavior should override this
      * method to create the appropriate options pages.
      */
@@ -343,7 +346,7 @@ class MemberAccess
     /**
      * Render the meta-boxes for this plugin in the advanced section of both
      * the post and page editing screens.
-     * 
+     *
      * @param string $page The type of page being loaded (page, post, link or comment)
      * @param string $context The context of the meta box (normal, advanced)
      * @param StdClass $object The object representing the page type
@@ -393,9 +396,14 @@ class MemberAccess
      *
      * @param integer $post_id
      */
-    function updatePostVisibility($post_id)
+    function updatePost($post_id)
     {
         global $wpdb;
+
+        // Don't update the wp_posts fields if this is a quick-edit.
+        if (@$_POST['action'] == 'inline-save') {
+            return;
+        }
 
         // Validate that the form input value is present and one of 'public'
         // or 'private'. If the input is missing, or contains some other value,
@@ -440,7 +448,7 @@ class MemberAccess
      * to the options page that was registered by the registerOptionsPage()
      * method. The link is titled 'Settings', and will appear as the first link
      * in the list of plugin links.
-     * 
+     *
      * @param array $links
      * @param string $file
      * @return array
@@ -543,7 +551,7 @@ class MemberAccess
         $view->set('pages_private'          , $this->getOption('pages_private'));
         $view->set('pages_redirect'         , $this->getOption('pages_redirect'));
         $view->set('pages_redirect_page'    , $this->getOption('pages_redirect_page'));
-        
+
         $view->set('posts_private'          , $this->getOption('posts_private'));
         $view->set('posts_redirect'         , $this->getOption('posts_redirect'));
         $view->set('posts_redirect_page'    , $this->getOption('posts_redirect_page'));
@@ -567,7 +575,7 @@ class MemberAccess
 
     /**
      * Render the metabox content for this plugin on the Page editing interface.
-     * 
+     *
      * @param StdClass $object The object representing the page type
      * @param array $box An array containing the id, title and callback used when
      *                   registering the meta box being displayed.
@@ -597,7 +605,7 @@ class MemberAccess
 
     /**
      * Render the metabox content for this plugin on the Post editing interface.
-     * 
+     *
      * @param StdClass $object The object representing the page type
      * @param array $box An array containing the id, title and callback used when
      *                   registering the meta box being displayed.
@@ -648,7 +656,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
         $view->set('plugin_text'   , 'Member Access');
-        $view->set('plugin_version', '0.1.3');
+        $view->set('plugin_version', '0.1.4');
         $view->set('author_href'   , 'http://www.chrisabernethy.com/');
         $view->set('author_text'   , 'Chris Abernethy');
         $view->render();
@@ -675,10 +683,10 @@ class MemberAccess
      * Send the user to the redirection target. If the redirection target is
      * not available (it's private, or it no longer exists), send the user to
      * the wp-login.php page.
-     * 
+     *
      * This method is intended to be used when an anonymous user attempts to
      * access a page or post that is only available to logged-in users.
-     * 
+     *
      * param integer $page_id The ID of the redirection target page.
      */
     function _redirect($page_id)
@@ -724,13 +732,13 @@ class MemberAccess
      * set to 'private'. This method takes into account both the default
      * privacy setting for the type of post given, as well as any override
      * setting on the post itself.
-     * 
+     *
      * If there is not override setting on the given post, and no default has
      * been established for the post type, the post is considered 'public' and
      * false will be returned. This can happen if the post is a type that is not
      * managed by this plugin, either by design or following the introduction of
      * a new post type by WordPress.
-     * 
+     *
      * This method is meant to be called as a static method.
      *
      * @param integer $post_id
@@ -744,7 +752,7 @@ class MemberAccess
         }
 
         $plugin = MemberAccess::instance();
-        
+
         $visibility = $post->{'member_access_visibility'};
         if ('default' === $visibility) {
             if ('post' == $post->post_type && $plugin->getOption('posts_private')) {

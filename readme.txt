@@ -4,7 +4,7 @@ Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.6
 Tested up to: 2.6.3
-Stable tag: 0.1.3
+Stable tag: 0.1.4
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
