@@ -21,3 +21,7 @@ Implemented i18n hooks and added default messages.pot for translators.
 Fixed problem with quick-edit nuking per-post plugin settings.
 Validated for use with WordPress 2.7
 ===
+1.0
+===
+Added uninstall functionality
+Validated for use with WordPress 2.7.1

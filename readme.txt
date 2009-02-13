@@ -3,14 +3,14 @@ Contributors: Brownoxford
 Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.6
-Tested up to: 2.7
-Stable tag: 0.1.4
+Tested up to: 2.7.1
+Stable tag: 1.0
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
 == Description ==
 
-**Please Note**: *This plugin is in testing status. It will not corrupt your data, but it may not display everything as you expect. Please take it for a spin, all feedback is welcome and can be submitted [here](http://www.chrisabernethy.com/contact/ "Send Feedback")*
+With the release of v1.0, this plugin is no longer in testing status. The current feature set is considered stable, please [report any bugs](http://www.chrisabernethy.com/contact/ "Report Bugs") and feel free to [suggest new features](http://www.chrisabernethy.com/contact/ "Suggest Features").
 
 Member Access allows a WordPress administrator to make individual posts and pages accessible only to logged-in members. Member Access allows global configuration so that all posts or pages can be viewable by everyone (the default) or only by members, and it also allows each post and page to override the global setting.
 

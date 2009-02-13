@@ -124,7 +124,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->getOption('version'), '0.1.4', '<')) {
+        if (version_compare($this->getOption('version'), '1.0', '<')) {
             $this->_upgrade();
             return;
         }
@@ -155,7 +155,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->setOption('version'                , '0.1.4');
+        $this->setOption('version'                , '1.0');
 
         $this->setOption('pages_private'          , false);
         $this->setOption('pages_redirect'         , false);
@@ -183,27 +183,6 @@ class MemberAccess
     }
 
     /**
-     * Remove all traces of this plugin from the WordPress database. This
-     * includes removing custom fields from the wp_posts table as well as any
-     * options in the wp_options table. This method should <em>only</em> be
-     * called if the plugin is also going to be deactivated.
-     */
-    function _uninstall()
-    {
-        global $wpdb;
-
-        // Remove the visibility field from the wp_posts table.
-        $wpdb->query(sprintf(
-            "ALTER TABLE %s DROP %s"
-          , $wpdb->posts
-          , $wpdb->escape('member_access_visibility')
-        ));
-
-        // Remove all plugin options from the wp_options table.
-        $this->_options->delete();
-    }
-
-    /**
      * This method is called when the internal plugin state needs to be
      * upgraded.
      */
@@ -215,7 +194,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->setOption('version', '3.5');
         //}
-        $this->setOption('version', '0.1.4');
+        $this->setOption('version', '1.0');
         $this->_options->save();
     }
 
@@ -656,7 +635,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
         $view->set('plugin_text'   , 'Member Access');
-        $view->set('plugin_version', '0.1.4');
+        $view->set('plugin_version', '1.0');
         $view->set('author_href'   , 'http://www.chrisabernethy.com/');
         $view->set('author_text'   , 'Chris Abernethy');
         $view->render();
