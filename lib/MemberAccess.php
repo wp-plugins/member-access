@@ -81,7 +81,7 @@ class MemberAccess
         $plugin = MemberAccess::instance();
 
         // Configure localization.
-        load_plugin_textdomain('member_access', false, 'locale');
+        load_plugin_textdomain('member_access', false, 'member_access/locale');
 
         // Activation and deactivation hooks have special registration
         // functions that handle sanitization of the given filename. It
@@ -101,7 +101,7 @@ class MemberAccess
 
         // Set up filter callbacks.
         add_filter('the_posts'                  , array(&$plugin, 'filterPosts'));
-        add_filter('the_content'                , array(&$plugin, 'filterContent'));
+        add_filter('the_content'                , array(&$plugin, 'filterContent'), 10);
         add_filter('manage_pages_columns'       , array(&$plugin, 'registerPostsColumns'));
         add_filter('manage_posts_columns'       , array(&$plugin, 'registerPostsColumns'));
         add_filter('plugin_action_links'        , array(&$plugin, 'renderOptionsLink'), 10, 2);
@@ -124,7 +124,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->getOption('version'), '1.0', '<')) {
+        if (version_compare($this->getOption('version'), '1.1.1', '<')) {
             $this->_upgrade();
             return;
         }
@@ -155,7 +155,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->setOption('version'                , '1.0');
+        $this->setOption('version'                , '1.1.1');
 
         $this->setOption('pages_private'          , false);
         $this->setOption('pages_redirect'         , false);
@@ -194,7 +194,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->setOption('version', '3.5');
         //}
-        $this->setOption('version', '1.0');
+        $this->setOption('version', '1.1.1');
         $this->_options->save();
     }
 
@@ -280,17 +280,29 @@ class MemberAccess
      */
     function filterContent($content)
     {
-        // If the user is logged in, return the content unfiltered.
+    	global $post;
+
+    	// If the user is logged in, return the content unfiltered.
         if (is_user_logged_in()) {
             return $content;
         }
+
+        // If we are on a page where excerpts are warranted based on page
+        // type and plugin configuration, and the post is private, replace
+        // the content with the excerpt. This method must be temporarily
+        // removed from the 'the_content' filter to prevent a loop resulting
+        // in the script aborting.
 
         switch(true) {
             case is_home()    && $this->getOption('postspage_excerpts'):
             case is_archive() && $this->getOption('archive_excerpts'):
             case is_search()  && $this->getOption('search_excerpts'):
             case is_feed()    && $this->getOption('rss_excerpts'):
-                $content = get_the_excerpt();
+            	if ($this->isPrivate($post->ID)) {
+			        remove_filter('the_content', array(&$this, 'filterContent'), 10);
+	            	$content = get_the_excerpt();
+			        add_filter('the_content', array(&$this, 'filterContent'), 10);
+            	}
                 break;
         }
 
@@ -635,7 +647,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
         $view->set('plugin_text'   , 'Member Access');
-        $view->set('plugin_version', '1.0');
+        $view->set('plugin_version', '1.1.1');
         $view->set('author_href'   , 'http://www.chrisabernethy.com/');
         $view->set('author_text'   , 'Chris Abernethy');
         $view->render();

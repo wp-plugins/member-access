@@ -3,12 +3,12 @@
  * Copyright 2008 Chris Abernethy
  *
  * This file is part of Member Access.
- * 
+ *
  * Member Access is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Member Access is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Member Access.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 ?>
 <div class="wrap">
@@ -34,7 +34,7 @@
                 <td>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_pages_private')?>" type="checkbox" value="1" <?php echo $this->get('pages_private') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('By default, only members can view pages', 'member_access')) ?></label>
-                    <p><?php echo wp_specialchars(__('If this option is enabled, only members will be able to view pages. This setting can be overridden for individual pages.')) ?></p>
+                    <p><?php echo wp_specialchars(__('If this option is enabled, only members will be able to view pages. This setting can be overridden for individual pages.', 'member_access')) ?></p>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_pages_redirect')?>" type="checkbox" value="1" <?php echo $this->get('pages_redirect') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Perform redirect for non-members', 'member_access')) ?></label><br/>
                     <p>
@@ -58,7 +58,7 @@
                 <td>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_posts_private')?>" type="checkbox" value="1" <?php echo $this->get('posts_private') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('By default, only members can view posts', 'member_access')) ?></label>
-                    <p><?php echo wp_specialchars(__('If this option is enabled, only members will be able to view posts. This setting can be overridden for individual posts.')) ?></p>
+                    <p><?php echo wp_specialchars(__('If this option is enabled, only members will be able to view posts. This setting can be overridden for individual posts.', 'member_access')) ?></p>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_posts_redirect')?>" type="checkbox" value="1" <?php echo $this->get('posts_redirect') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Perform redirect for non-members', 'member_access')) ?></label><br/>
                     <p>
@@ -82,7 +82,7 @@
                 <td>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_postspage_excerpts')?>" type="checkbox" value="1" <?php echo $this->get('postspage_excerpts') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Posts page includes excerpts of content viewable only by members', 'member_access')) ?></label>
-                    <p><?php echo wp_specialchars(__('Your posts page is configured in Settings->Reading, and is either your home page when you elect to display your latest posts on the home page, or it is the static page that you designate as your posts page. Do you want your posts page to include excerpts of items that are viewable only by members? If this option is not enabled, these items will be omitted entirely from your posts page.')) ?></p>
+                    <p><?php echo wp_specialchars(__('Your posts page is configured in Settings->Reading, and is either your home page when you elect to display your latest posts on the home page, or it is the static page that you designate as your posts page. Do you want your posts page to include excerpts of items that are viewable only by members? If this option is not enabled, these items will be omitted entirely from your posts page.', 'member_access')) ?></p>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_postspage_redirect')?>" type="checkbox" value="1" <?php echo $this->get('postspage_redirect') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Perform redirect if all available posts page items are viewable only by members', 'member_access')) ?></label><br/>
                     <p>
@@ -91,7 +91,7 @@
                     <p>
                         <select name="<?php echo attribute_escape($this->get('plugin_label') . '_postspage_redirect_page') ?>">
                             <option value="0"><?php echo wp_specialchars(__('Wordpress Login Page', 'member_access')) ?></option>
-                            <?php parent_dropdown($this->get('postspate_redirect_page')) ?>
+                            <?php parent_dropdown($this->get('postspage_redirect_page')) ?>
                         </select>
                     </p>
                     <p>
@@ -106,7 +106,7 @@
                 <td>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_archive_excerpts')?>" type="checkbox" value="1" <?php echo $this->get('archive_excerpts') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Archive pages include excerpts of content viewable only by members', 'member_access')) ?></label>
-                    <p><?php echo wp_specialchars(__('Do you want archive pages to include excerpts of items that are viewable only by members? If this option is not enabled, these items will be omitted entirely from archive pages.')) ?></p>
+                    <p><?php echo wp_specialchars(__('Do you want archive pages to include excerpts of items that are viewable only by members? If this option is not enabled, these items will be omitted entirely from archive pages.', 'member_access')) ?></p>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_archive_redirect')?>" type="checkbox" value="1" <?php echo $this->get('archive_redirect') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Perform redirect if all available archive items are viewable only by members', 'member_access')) ?></label><br/>
                     <p>
@@ -130,7 +130,7 @@
                 <td>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_search_excerpts')?>" type="checkbox" value="1" <?php echo $this->get('search_excerpts') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Search results include excerpts of content viewable only by members', 'member_access')) ?></label>
-                    <p><?php echo wp_specialchars(__('Do you want search results to include excerpts of items viewable only by members? If this option is not enabled, these items will be omitted entirely from search results.')) ?></p>
+                    <p><?php echo wp_specialchars(__('Do you want search results to include excerpts of items viewable only by members? If this option is not enabled, these items will be omitted entirely from search results.', 'member_access')) ?></p>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_search_redirect')?>" type="checkbox" value="1" <?php echo $this->get('search_redirect') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('Perform redirect if all search results are viewable only by members', 'member_access')) ?></label><br/>
                     <p>
@@ -154,7 +154,7 @@
                 <td>
 
                     <label class="selectit"><input name="<?php echo attribute_escape($this->get('plugin_label') . '_rss_excerpts')?>" type="checkbox" value="1" <?php echo $this->get('rss_excerpts') ? 'checked="checked"' : ''?>/> <?php echo wp_specialchars(__('RSS feeds include excerpts of content viewable only by members', 'member_access')) ?></label>
-                    <p><?php echo wp_specialchars(__('Do you want RSS feeds to include excerpts of items viewable only by members? If this option is not enabled, these items will be omitted entirely from RSS feeds.')) ?></p>
+                    <p><?php echo wp_specialchars(__('Do you want RSS feeds to include excerpts of items viewable only by members? If this option is not enabled, these items will be omitted entirely from RSS feeds.', 'member_access')) ?></p>
 
                 </td>
             </tr>

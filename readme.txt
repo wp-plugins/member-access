@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: Brownoxford
+Contributors: brownoxford,jandal,maestrobob
 Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
-Requires at least: 2.6
-Tested up to: 2.7.1
-Stable tag: 1.0
+Requires at least: 2.8.4
+Tested up to: 2.8.4
+Stable tag: 1.1.1
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
@@ -42,6 +42,19 @@ Installing Member Access is easy:
 2. This screenshot shows the Write Post interface where global settings can be overridden for a single post.
 3. This screenshot is from the Manage Posts interface. The 'Visibility' column shows the visibility status for each listed post.
 
+== Localization ==
+
+If you are interested in contributing to the localization of Member Access, please [contact me](http://www.chrisabernethy.com/contact/ "Help Localize Member Access") and let me know which language you would like to translate. All help is greatly appreciated!
+
+Localization Contributors:
+
+* German Translation: [Felix Triller](http://felixtriller.de/ "Felix Triller")
+
+Some resources on localization:
+
+* http://codex.wordpress.org/I18n_for_WordPress_Developers
+* http://www.symbolcraft.com/blog/how_to_i18n_your_wordpress_plugin/29/
+
 == Template Developers ==
 
 This plugin provides the template tag `member_access_is_private()` that can be used to determine whether or not a post should be visible only to members. You can use this tag in your templates to add custom styles to posts that are not available to the general public. For example:
@@ -64,3 +77,39 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 * For more info, version history, etc. check out the page on my site about the [Member Access plugin](http://www.chrisabernethy.com/wordpress-plugins/member-access/ "Member Access"). 
 * To check out the other WordPress plugins I wrote, visit my [WordPress plugins](http://www.chrisabernethy.com/wordpress-plugins/ "Other WordPress Plugins by Chris Abernethy") page.
 * For updates about this plugin and the other plugins that I maintain, read my [consulting blog](http://www.chrisabernethy.com/ "Chris Abernethy") or [follow me on Twitter!](http://twitter.com/brownoxford "Follow me on Twitter!")
+
+== Changelog ==
+
+= 0.1 =
+* Initial Release.
+
+= 0.1.1 =
+* Code still includes use of 'self' keyword
+* Call to a member function query() on a non-object
+
+= 0.1.2 =
+* Settings link on plugin page doesn't display
+* Object overloading does not work by default in PHP4
+
+= 0.1.3 =
+* Plugin still broken for some PHP4 installations
+
+= 0.1.4 =
+* Implemented i18n hooks and added default messages.pot for translators.
+* Fixed problem with quick-edit nuking per-post plugin settings.
+* Validated for use with WordPress 2.7
+
+= 1.0 =
+* Added uninstall functionality
+* Validated for use with WordPress 2.7.1
+
+= 1.1 =
+* Added German translation by [Felix Triller](http://felixtriller.de/ "Felix Triller")
+
+= 1.1.1 =
+* Tested to WordPress v2.8.4
+* Added Changelog
+* Removed filter loop which cased script execution to halt, resulting in blank pages. Thanks [James Turner](http://www.jamesturner.co.nz/ "James Turner").
+* Only private posts display excerpts on archive pages (instead of all posts). Thanks [James Turner](http://www.jamesturner.co.nz/ "James Turner").
+* Posts Page redirect pulldown was not correctly showing current option. Thanks [maestrobob](http://wordpress.org/support/profile/1139184 "maestrobob").
+* Version bump to 1.1.1
