@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: brownoxford,jandal,maestrobob
+Contributors: brownoxford
 Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.8.4
-Tested up to: 2.8.4
-Stable tag: 1.1.1
+Tested up to: 3.0
+Stable tag: 1.1.2
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
@@ -24,7 +24,7 @@ More info:
 
 * [Member Access](http://www.chrisabernethy.com/wordpress-plugins/member-access/ "Member Access") plugin.
 * Check out the other [WordPress plugins](http://www.chrisabernethy.com/wordpress-plugins/ "Other WordPress Plugins by Chris Abernethy") by the same author.
-* To be notified of plugin updates, [follow me on Twitter!](http://twitter.com/brownoxford "Follow me on Twitter!")
+* To be notified of plugin updates, [follow me on Twitter](http://twitter.com/brownoxford "Follow me on Twitter") or [join the mailing list!](http://eepurl.com/HsV3 "Subscribe to the mailing list!")
 
 == Installation ==
 
@@ -44,6 +44,8 @@ Installing Member Access is easy:
 
 == Localization ==
 
+**NOTE:** If you have previously sent me a translation file, [please resend it](mailto:wordpress@chrisabernethy.com "Resend localization files"). All stored translation files were lost!
+
 If you are interested in contributing to the localization of Member Access, please [contact me](http://www.chrisabernethy.com/contact/ "Help Localize Member Access") and let me know which language you would like to translate. All help is greatly appreciated!
 
 Localization Contributors:
@@ -52,8 +54,8 @@ Localization Contributors:
 
 Some resources on localization:
 
-* http://codex.wordpress.org/I18n_for_WordPress_Developers
-* http://www.symbolcraft.com/blog/how_to_i18n_your_wordpress_plugin/29/
+* [I18n for WordPress Developers](http://codex.wordpress.org/I18n_for_WordPress_Developers "I18n for WordPress Developers")
+* [How to Internationalize Your WordPress Plugin](http://www.symbolcraft.com/blog/how_to_i18n_your_wordpress_plugin/29/ "How to Internationalize Your WordPress Plugin")
 
 == Template Developers ==
 
@@ -76,7 +78,7 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 
 * For more info, version history, etc. check out the page on my site about the [Member Access plugin](http://www.chrisabernethy.com/wordpress-plugins/member-access/ "Member Access"). 
 * To check out the other WordPress plugins I wrote, visit my [WordPress plugins](http://www.chrisabernethy.com/wordpress-plugins/ "Other WordPress Plugins by Chris Abernethy") page.
-* For updates about this plugin and the other plugins that I maintain, read my [consulting blog](http://www.chrisabernethy.com/ "Chris Abernethy") or [follow me on Twitter!](http://twitter.com/brownoxford "Follow me on Twitter!")
+* For updates about this plugin and the other plugins that I maintain, read my [consulting blog](http://www.chrisabernethy.com/ "Chris Abernethy"), [follow me on Twitter](http://twitter.com/brownoxford "Follow me on Twitter!"), or [join the mailing list!](http://eepurl.com/HsV3 "Subscribe to the mailing list!")
 
 == Changelog ==
 
@@ -113,3 +115,11 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 * Only private posts display excerpts on archive pages (instead of all posts). Thanks [James Turner](http://www.jamesturner.co.nz/ "James Turner").
 * Posts Page redirect pulldown was not correctly showing current option. Thanks [maestrobob](http://wordpress.org/support/profile/1139184 "maestrobob").
 * Version bump to 1.1.1
+
+= 1.1.2 =
+* Verified compatibility with WordPress 3.0
+
+== Upgrade Notice ==
+
+= 1.1.2 =
+Compatibility testing up to WordPress 3.0. NOTE: If you sent me a translation file, it was lost. Please resend!
