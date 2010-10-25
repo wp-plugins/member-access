@@ -20,5 +20,5 @@
  */
 ?>
 <div id="message" class="updated fade">
-    <p><strong><?php echo wp_specialchars($this->get('message')) ?></strong></p>
+    <p><strong><?php echo esc_html($this->get('message')) ?></strong></p>
 </div>

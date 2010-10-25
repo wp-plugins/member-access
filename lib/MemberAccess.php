@@ -81,7 +81,8 @@ class MemberAccess
         $plugin = MemberAccess::instance();
 
         // Configure localization.
-        load_plugin_textdomain('member_access', false, 'member_access/locale');
+        // Use correct plugin directory name, not plugin_label
+        load_plugin_textdomain('member_access', false, 'member-access/locale');
 
         // Activation and deactivation hooks have special registration
         // functions that handle sanitization of the given filename. It
@@ -124,7 +125,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->getOption('version'), '1.1.2', '<')) {
+        if (version_compare($this->getOption('version'), '1.1.3', '<')) {
             $this->_upgrade();
             return;
         }
@@ -155,7 +156,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->setOption('version'                , '1.1.2');
+        $this->setOption('version'                , '1.1.3');
 
         $this->setOption('pages_private'          , false);
         $this->setOption('pages_redirect'         , false);
@@ -194,7 +195,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->setOption('version', '3.5');
         //}
-        $this->setOption('version', '1.1.2');
+        $this->setOption('version', '1.1.3');
         $this->_options->save();
     }
 
@@ -320,11 +321,11 @@ class MemberAccess
     function registerOptionsPage()
     {
         $page = add_submenu_page(
-            'plugins.php'                     // parent
-          , wp_specialchars('Member Access')  // page_title
-          , wp_specialchars('Member Access')  // menu_title
-          , 'manage_options'                  // access_level
-          , 'member_access'                  // file
+            'options-general.php'              // parent
+          , esc_html('Member Access')          // page_title
+          , esc_html('Member Access')          // menu_title
+          , 'manage_options'                   // access_level
+          , 'member_access'                   // file
           , array(&$this, 'renderOptionsPage') // function
         );
 
@@ -347,8 +348,8 @@ class MemberAccess
         if (in_array($page, array('page', 'post'))) {
             $callback = 'render' . ucfirst($page) . 'MetaBox';
             add_meta_box(
-                attribute_escape('member_access') // id attribute
-              , wp_specialchars('Member Access')   // metabox title
+                esc_attr('member_access') // id attribute
+              , esc_html('Member Access')   // metabox title
               , array(&$this, $callback)           // callback function
               , $page                              // page type
             );
@@ -430,7 +431,7 @@ class MemberAccess
      */
     function registerPostsColumns($defaults)
     {
-        $defaults['member_access_visibility'] = wp_specialchars(__('Visibility', 'member_access'));
+        $defaults['member_access_visibility'] = esc_html(__('Visibility', 'member_access'));
         return $defaults;
     }
 
@@ -647,7 +648,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
         $view->set('plugin_text'   , 'Member Access');
-        $view->set('plugin_version', '1.1.2');
+        $view->set('plugin_version', '1.1.3');
         $view->set('author_href'   , 'http://www.chrisabernethy.com/');
         $view->set('author_text'   , 'Chris Abernethy');
         $view->render();

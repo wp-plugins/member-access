@@ -3,14 +3,14 @@ Contributors: brownoxford
 Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.8.4
-Tested up to: 3.0
-Stable tag: 1.1.2
+Tested up to: 3.0.1
+Stable tag: 1.1.3
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
 == Description ==
 
-With the release of v1.0, this plugin is no longer in testing status. The current feature set is considered stable, please [report any bugs](http://www.chrisabernethy.com/contact/ "Report Bugs") and feel free to [suggest new features](http://www.chrisabernethy.com/contact/ "Suggest Features").
+Please [report any bugs](http://www.chrisabernethy.com/contact/ "Report Bugs") and feel free to [suggest new features](http://www.chrisabernethy.com/contact/ "Suggest Features").
 
 Member Access allows a WordPress administrator to make individual posts and pages accessible only to logged-in members. Member Access allows global configuration so that all posts or pages can be viewable by everyone (the default) or only by members, and it also allows each post and page to override the global setting.
 
@@ -51,6 +51,7 @@ If you are interested in contributing to the localization of Member Access, plea
 Localization Contributors:
 
 * German Translation: [Felix Triller](http://felixtriller.de/ "Felix Triller")
+* Danish Translation: [Jakob Smith](http://omkalfatring.dk/ "Jakob Smith")
 
 Some resources on localization:
 
@@ -118,6 +119,13 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 
 = 1.1.2 =
 * Verified compatibility with WordPress 3.0
+
+= 1.1.3 =
+* Added Danish translation from Jakob Smith
+* Fix localization issue preventing use of configured WP_LANG language
+* Move settings option from "Plugins" to "Settings" menu in admin panel
+* Replace use of deprecated wp_specialchars with esc_html
+* Replace use of deprecated attribute_escape with esc_attr
 
 == Upgrade Notice ==
 
