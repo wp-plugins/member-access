@@ -3,8 +3,8 @@ Contributors: brownoxford
 Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.8.4
-Tested up to: 3.0.1
-Stable tag: 1.1.3
+Tested up to: 3.2.1
+Stable tag: 1.1.4
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
@@ -83,31 +83,20 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 
 == Changelog ==
 
-= 0.1 =
-* Initial Release.
+= 1.1.4 =
+* Reverse order of changelog entries.
+* Fix "Settings" link on plugins page.
+* Tested up to WordPress v3.2.1
 
-= 0.1.1 =
-* Code still includes use of 'self' keyword
-* Call to a member function query() on a non-object
+= 1.1.3 =
+* Added Danish translation from Jakob Smith
+* Fix localization issue preventing use of configured WP_LANG language
+* Move settings option from "Plugins" to "Settings" menu in admin panel
+* Replace use of deprecated wp_specialchars with esc_html
+* Replace use of deprecated attribute_escape with esc_attr
 
-= 0.1.2 =
-* Settings link on plugin page doesn't display
-* Object overloading does not work by default in PHP4
-
-= 0.1.3 =
-* Plugin still broken for some PHP4 installations
-
-= 0.1.4 =
-* Implemented i18n hooks and added default messages.pot for translators.
-* Fixed problem with quick-edit nuking per-post plugin settings.
-* Validated for use with WordPress 2.7
-
-= 1.0 =
-* Added uninstall functionality
-* Validated for use with WordPress 2.7.1
-
-= 1.1 =
-* Added German translation by [Felix Triller](http://felixtriller.de/ "Felix Triller")
+= 1.1.2 =
+* Verified compatibility with WordPress 3.0
 
 = 1.1.1 =
 * Tested to WordPress v2.8.4
@@ -117,15 +106,31 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 * Posts Page redirect pulldown was not correctly showing current option. Thanks [maestrobob](http://wordpress.org/support/profile/1139184 "maestrobob").
 * Version bump to 1.1.1
 
-= 1.1.2 =
-* Verified compatibility with WordPress 3.0
+= 1.1 =
+* Added German translation by [Felix Triller](http://felixtriller.de/ "Felix Triller")
 
-= 1.1.3 =
-* Added Danish translation from Jakob Smith
-* Fix localization issue preventing use of configured WP_LANG language
-* Move settings option from "Plugins" to "Settings" menu in admin panel
-* Replace use of deprecated wp_specialchars with esc_html
-* Replace use of deprecated attribute_escape with esc_attr
+= 1.0 =
+* Added uninstall functionality
+* Validated for use with WordPress 2.7.1
+
+= 0.1.4 =
+* Implemented i18n hooks and added default messages.pot for translators.
+* Fixed problem with quick-edit nuking per-post plugin settings.
+* Validated for use with WordPress 2.7
+
+= 0.1.3 =
+* Plugin still broken for some PHP4 installations
+
+= 0.1.2 =
+* Settings link on plugin page doesn't display
+* Object overloading does not work by default in PHP4
+
+= 0.1.1 =
+* Code still includes use of 'self' keyword
+* Call to a member function query() on a non-object
+
+= 0.1 =
+* Initial Release.
 
 == Upgrade Notice ==
 

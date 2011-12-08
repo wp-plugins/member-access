@@ -125,7 +125,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->getOption('version'), '1.1.3', '<')) {
+        if (version_compare($this->getOption('version'), '1.1.4', '<')) {
             $this->_upgrade();
             return;
         }
@@ -156,7 +156,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->setOption('version'                , '1.1.3');
+        $this->setOption('version'                , '1.1.4');
 
         $this->setOption('pages_private'          , false);
         $this->setOption('pages_redirect'         , false);
@@ -195,7 +195,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->setOption('version', '3.5');
         //}
-        $this->setOption('version', '1.1.3');
+        $this->setOption('version', '1.1.4');
         $this->_options->save();
     }
 
@@ -312,7 +312,7 @@ class MemberAccess
 
     /**
      * This is the admin_menu activation hook callback, it adds a sub-menu
-     * navigation item for this plugin to the plugins.php page and links it to
+     * navigation item for this plugin to the settings page and links it to
      * the renderOptionsPage() method.
      *
      * Plugins wishing to change this default behavior should override this
@@ -455,7 +455,7 @@ class MemberAccess
 
         if (dirname($file) == $plugin_dir) {
             $view = new MemberAccess_Structure_View('options-link.phtml');
-            $view->set('link_href' , 'plugins.php?page=member_access');
+            $view->set('link_href' , 'options-general.php?page=member_access');
             $view->set('link_title', sprintf(__('%s Settings', 'member_access'), 'Member Access'));
             $view->set('link_text' , __('Settings', 'member_access'));
             ob_start();
@@ -648,7 +648,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
         $view->set('plugin_text'   , 'Member Access');
-        $view->set('plugin_version', '1.1.3');
+        $view->set('plugin_version', '1.1.4');
         $view->set('author_href'   , 'http://www.chrisabernethy.com/');
         $view->set('author_text'   , 'Chris Abernethy');
         $view->render();
