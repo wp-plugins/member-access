@@ -3,8 +3,8 @@ Contributors: brownoxford
 Donate link: http://www.chrisabernethy.com/donate/
 Tags: access, posts, pages, restrict, admin, user, members
 Requires at least: 2.8.4
-Tested up to: 3.2.1
-Stable tag: 1.1.4
+Tested up to: 3.3
+Stable tag: 1.1.5
 
 Member Access is a WordPress plugin that allows an administrator to require that users be logged-in in order to view certain posts and pages.
 
@@ -52,6 +52,7 @@ Localization Contributors:
 
 * German Translation: [Felix Triller](http://felixtriller.de/ "Felix Triller")
 * Danish Translation: [Jakob Smith](http://omkalfatring.dk/ "Jakob Smith")
+* French Translation: [JŽr™me Fabre](http://jeromefabre.fr/ "JŽr™me Fabre")
 
 Some resources on localization:
 
@@ -82,6 +83,11 @@ You should also keep in mind that calls to `the_content()` from within the loop 
 * For updates about this plugin and the other plugins that I maintain, read my [consulting blog](http://www.chrisabernethy.com/ "Chris Abernethy"), [follow me on Twitter](http://twitter.com/brownoxford "Follow me on Twitter!"), or [join the mailing list!](http://eepurl.com/HsV3 "Subscribe to the mailing list!")
 
 == Changelog ==
+
+= 1.1.5 =
+* Added French translation by [JŽr™me Fabre](http://jeromefabre.fr/ "JŽr™me Fabre")
+* Fixed "unexpected output during activation" warning
+* Tested up to WordPress v3.3
 
 = 1.1.4 =
 * Reverse order of changelog entries.
