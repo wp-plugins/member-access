@@ -98,6 +98,7 @@ class MemberAccess
         add_action('manage_pages_custom_column' , array(&$plugin, 'renderPostsColumns'), 10, 2);
         add_action('manage_posts_custom_column' , array(&$plugin, 'renderPostsColumns'), 10, 2);
         add_action('wp_insert_post'             , array(&$plugin, 'updatePost'));
+        add_action('quick_edit_custom_box'      , array(&$plugin, 'renderQuickEdit'), 99, 2);
         add_action('member_access_save_options', array(&$plugin, 'saveOptionsPage'));
 
         // Set up filter callbacks.
@@ -125,7 +126,7 @@ class MemberAccess
 
         // If the plugin version stored in the options structure is older than
         // the current plugin version, initiate the upgrade sequence.
-        if (version_compare($this->getOption('version'), '1.1.5', '<')) {
+        if (version_compare($this->getOption('version'), '1.1.6', '<')) {
             $this->_upgrade();
             return;
         }
@@ -156,7 +157,7 @@ class MemberAccess
         ));
 
         // Set the default options.
-        $this->setOption('version'                , '1.1.5');
+        $this->setOption('version'                , '1.1.6');
 
         $this->setOption('pages_private'          , false);
         $this->setOption('pages_redirect'         , false);
@@ -195,7 +196,7 @@ class MemberAccess
         //    // Do upgrades for version 3.5
         //    $this->setOption('version', '3.5');
         //}
-        $this->setOption('version', '1.1.5');
+        $this->setOption('version', '1.1.6');
         $this->_options->save();
     }
 
@@ -367,19 +368,80 @@ class MemberAccess
     {
         global $post;
 
-        if ('member_access_visibility' === $column_name) {
-            switch($post->{'member_access_visibility'}) {
-                case 'public':  $visibility = __('Everyone'); break;
-                case 'private': $visibility = __('Members');  break;
-                case 'default':
-                    $visibility = __('Default (Everyone)');
-                    if (MemberAccess::isPrivate($post_id)) {
-                        $visibility = __('Default (Members)');
-                    }
-                    break;
-            }
-            echo $visibility;
+        if ('member_access_visibility' !== $column_name) {
+            return;
         }
+
+        $radio_value = 'default';
+        $visibility  = __('Default (Everyone)', 'member_access');
+        if (MemberAccess::isPrivate($post_id)) {
+            $visibility = __('Default (Members)', 'member_access');
+        }
+
+        switch($post->{'member_access_visibility'}) {
+            case 'public':
+                $radio_value = 'public';
+                $visibility  = __('Everyone', 'member_access');
+                break;
+            case 'private':
+                $radio_value = 'private';
+                $visibility  = __('Members', 'member_access');
+                break;
+        }
+
+        $view = new MemberAccess_Structure_View('posts-column.phtml');
+        $view->set('post_id', $post_id);
+        $view->set('radio_value', $radio_value);
+        $view->set('visibility', $visibility);
+        $view->render();
+    }
+
+    /**
+     * Render the quick-edit form fields for the given post type.
+     *
+     * @param string $column_name
+     * @param string $post_type
+     */
+    public function renderQuickEdit($column_name, $post_type)
+    {
+        if ('member_access_visibility' !== $column_name) {
+            return;
+        }
+
+        // TODO: This is rudimentary, and will need to be expanded to work with
+        //       custom post types.
+
+        if (!in_array($post_type, array('post', 'page'))) {
+            return;
+        }
+
+        $singular = 'post';
+        $plural   = 'posts';
+        $private  = $this->getOption('posts_private');
+
+        if ('page' == $post_type) {
+            $singular = 'page';
+            $plural   = 'pages';
+            $private  = $this->getOption('pages_private');
+        }
+
+        $view = new MemberAccess_Structure_View('quick-edit.phtml');
+        $view->set('plugin_label', 'member_access');
+
+        if ($private) {
+            $view->set('current_state_message', __(
+                "By default, $plural are currently visible only to members. You "
+              . "can override that here or continue to have this $singular honor "
+              . 'the default visibility settings.'
+            , 'member_access'));
+        } else {
+            $view->set('current_state_message', __(
+                "By default, $plural are currently visible to everyone. You "
+              . "can override that here or continue to have this $singular honor "
+              . 'the default visibility settings.'
+            , 'member_access'));
+        }
+        $view->render();
     }
 
     /**
@@ -391,11 +453,6 @@ class MemberAccess
     function updatePost($post_id)
     {
         global $wpdb;
-
-        // Don't update the wp_posts fields if this is a quick-edit.
-        if (@$_POST['action'] == 'inline-save') {
-            return;
-        }
 
         // Validate that the form input value is present and one of 'public'
         // or 'private'. If the input is missing, or contains some other value,
@@ -648,7 +705,7 @@ class MemberAccess
         $view = new MemberAccess_Structure_View('options-footer.phtml');
         $view->set('plugin_href'   , 'http://www.chrisabernethy.com/wordpress-plugins/member-access/');
         $view->set('plugin_text'   , 'Member Access');
-        $view->set('plugin_version', '1.1.5');
+        $view->set('plugin_version', '1.1.6');
         $view->set('author_href'   , 'http://www.chrisabernethy.com/');
         $view->set('author_text'   , 'Chris Abernethy');
         $view->render();
@@ -706,7 +763,7 @@ class MemberAccess
         global $wpdb;
 
         $result = $wpdb->query(sprintf(
-            "UPDATE %s SET %s = NULL WHERE post_type = '%s'"
+            "UPDATE %s SET %s = 'default' WHERE post_type = '%s'"
           , $wpdb->posts
           , $wpdb->escape('member_access_visibility')
           , $wpdb->escape($post_type)
